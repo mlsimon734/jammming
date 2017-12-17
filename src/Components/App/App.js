@@ -8,11 +8,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [{name: 'Song'},{artist: 'Artist'},{album: 'Album'}],
+      searchResults: [],
       playlistName: 'Playlist Name',
-      playlistTracks: [{name: 'Song'},{artist: 'Artist'},{album: 'Album'}]
-    };
-
+      playlistTracks: []
+      //{name: 'Song'},{artist: 'Artist'},{album: 'Album'}
+    }
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+  }
+  addTrack(track) {
+    let playlist = this.state.playlistTracks;
+    if (this.state.playlistTracks.indexOf(track) === -1) {
+      playlist.push(track);
+      this.setState({playlistTracks: playlist})
+    }
+  }
+  removeTrack(track) {
+    let playlist = this.state.playlistTracks;
+    if (this.state.playlistTracks.indexOf(track) >= 0) {
+      playlist.splice(this.state.playlistTracks.indexOf(track), 1);
+      this.setState({playlistTracks: playlist})
+    }
   }
   render() {
     return (
@@ -21,8 +37,8 @@ class App extends React.Component {
         <div className="App">
             <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults}/>
-            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}/>
+            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
+            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack}/>
           </div>
         </div>
       </div>
